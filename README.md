@@ -1,82 +1,59 @@
 # techtown-claude-code
 
-Configuration Claude Code de référence pour tous les projets TechTown.
+Configuration Claude Code **niveau organisation** pour TechTown.
+La gouvernance se fait via les **managed settings** poussés depuis la console admin Anthropic (TechTown n'a pas de MDM).
 
 ## Contenu
 
 | Fichier | Rôle |
 |---------|------|
-| `settings.json` | Paramètres CC **niveau projet** (modèle, langue, permissions souples, attribution) — overridable localement |
-| `managed-settings.template.json` | **Archive** du contenu poussé dans la **console admin** Anthropic (managed settings, inviolable) — voir ci-dessous |
-| `CLAUDE.md` | Instructions Claude communes à tous les projets TechTown |
-| `scripts/deploy.sh` | Script d'adoption dans un projet existant |
+| `managed-settings.template.json` | **Source de vérité versionnée** du JSON poussé dans la console admin Anthropic (settings managés, inviolables) |
+| `CLAUDE.md` | Instructions Claude communes aux projets TechTown (à référencer/copier par projet) |
 
-## Deux niveaux de configuration
+## Comment c'est déployé
 
-1. **Niveau projet** (`settings.json`) — cloné/déployé par projet via `scripts/deploy.sh`. Chaque collaborateur peut l'ajuster localement (`.claude/settings.local.json`). Conventions souples : modèle, langue, allow pratiques.
+Les managed settings ne se déploient **pas par git** — ils vivent côté serveur Anthropic :
 
-2. **Niveau managé / org** (`managed-settings.template.json`) — **inviolable**, poussé via la **console admin** Anthropic (`claude.ai/admin-settings/claude-code`), pas par git. TechTown n'a pas de MDM → c'est le canal officiel (plan Team/Enterprise). Garde-fous de sécurité : `deny` secrets + `ask` sur effets destructifs, verrou org, allowlist MCP/marketplaces.
+1. Édite `managed-settings.template.json` dans ce repo (diff/historique git que la console n'offre pas).
+2. Copie son contenu dans **console admin → Claude Code → Paramètres gérés** (`claude.ai/admin-settings/claude-code`).
+3. Clique **« Mettre à jour les paramètres »**.
+4. Chaque poste les récupère dans `~/.claude/remote-settings.json` (au démarrage + refetch ~horaire).
 
-> ⚠️ `managed-settings.template.json` est une **copie de référence versionnée** — la console admin n'a pas d'historique git. Workflow : éditer ce fichier → copier son contenu dans la console → cliquer **« Mettre à jour les paramètres »**. Les clients le fetchent dans `~/.claude/remote-settings.json` (au démarrage + refetch horaire), **selon l'org authentifiée** (être loggé sous l'org TechTown pour le voir s'appliquer).
+> ⚠️ **Les managed settings sont fetchés selon l'org authentifiée.** Pour les voir s'appliquer, Claude Code doit être connecté sous l'**org TechTown** (`/login` → choisir TechTown). Une session connectée à une autre org (client, perso) ne verra jamais ces settings.
 
-## Déploiement dans un projet
+> ⚠️ La console valide contre le [schéma Claude Code](https://json.schemastore.org/claude-code-settings.json). Des paramètres invalides peuvent **désactiver Claude Code pour toute l'org** — toujours valider (`jq . managed-settings.template.json`) avant de coller.
 
-### Option 1 — Script automatique (recommandé)
+## Ce que contient la config managée
 
-```bash
-# Depuis la racine de votre projet TechTown
-curl -s https://raw.githubusercontent.com/techtown-fr/techtown-claude-code/main/scripts/deploy.sh | bash
-```
+- **Sécurité** : `deny` des secrets (`.env`, `~/.ssh`, `~/.config/gcloud`, `~/.aws`, `~/.gnupg`) + `curl|sh` ; `ask` sur les effets destructifs (force push, `reset --hard`, `gcloud/gsutil/terraform delete`, `rm -rf`, formatage disque…).
+- **Gouvernance** : `forceLoginOrgUUID` (verrou org TechTown), `allowedMcpServers` + `allowManagedMcpServersOnly` (allowlist MCP : github, context7, playwright), `strictKnownMarketplaces` (2 marketplaces officielles Anthropic), `disableBypassPermissionsMode`.
+- **Conventions org** : `model` (claude-sonnet-4-6), `language` (français), `companyAnnouncements`, `attribution`, `includeGitInstructions`, `requiredMinimumVersion`.
 
-### Option 2 — Copie manuelle
-
-```bash
-# Créer le dossier .claude s'il n'existe pas
-mkdir -p .claude
-
-# Copier les settings org
-curl -s https://raw.githubusercontent.com/techtown-fr/techtown-claude-code/main/settings.json \
-  > .claude/settings.json
-
-# Copier le CLAUDE.md org (ou le référencer depuis votre CLAUDE.md)
-curl -s https://raw.githubusercontent.com/techtown-fr/techtown-claude-code/main/CLAUDE.md \
-  > CLAUDE.md
-```
-
-> **Note :** Si votre projet a déjà un `.claude/settings.json`, fusionnez manuellement les clés.
-> Les settings projet écrasent les settings org pour les clés communes — c'est le comportement attendu.
-
-## Vérifier que les settings sont actifs
-
-Après déploiement, ouvrez Claude Code depuis votre projet et exécutez `/config`.
-Vous devez voir :
-- `model` : `claude-sonnet-4-6`
-- `language` : `french`
+**Choix de design :** les `allow` ne sont **pas** verrouillés au niveau managé — chaque collaborateur garde ses `allow` projet/user. Le managé n'impose que les garde-fous `ask`/`deny` et la gouvernance. L'auto-mode n'est **pas** bloqué.
 
 ## Niveaux de settings dans Claude Code
 
 ```
 Priorité (du plus fort au plus faible)
-┌─────────────────────────────────────────┐
-│  Local    .claude/settings.local.json   │ ← overrides personnels (gitignore)
-│  Projet   .claude/settings.json         │ ← settings du projet (commités)
-│  User     ~/.claude/settings.json       │ ← préférences personnelles
-└─────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────┐
+│ Managed  (console admin / server-managed)   ← INVIOLABLE │  ← ce repo
+│ CLI args                                                 │
+│ Local    .claude/settings.local.json (gitignore)         │
+│ Projet   .claude/settings.json (commité)                 │
+│ User     ~/.claude/settings.json                         │
+└────────────────────────────────────────────────────────┘
 
-[Enterprise uniquement]
-  Managed  /Library/Application Support/ClaudeCode/managed-settings.json
-           → déployé par IT via MDM, non-overridable par les utilisateurs
+Cache local des managed settings fetchés : ~/.claude/remote-settings.json (lecture seule)
 ```
 
-## Mise à jour
+## Instructions org (`CLAUDE.md`)
 
-Pour mettre à jour un projet après une évolution des settings org :
+`CLAUDE.md` n'est pas distribuable via managed settings. Pour l'appliquer à un projet, copie-le ou référence-le :
 
 ```bash
-curl -s https://raw.githubusercontent.com/techtown-fr/techtown-claude-code/main/scripts/deploy.sh | bash
+curl -s https://raw.githubusercontent.com/techtown-fr/techtown-claude-code/main/CLAUDE.md > CLAUDE.md
 ```
 
 ## Contribuer
 
-PRs bienvenues pour améliorer les standards TechTown.
-Soumettre à `benjamin.bourgeois@techtown.fr` ou `nikolas.bouron@techtown.fr` pour review.
+PRs bienvenues. Soumettre à `benjamin.bourgeois@techtown.fr` ou `nikolas.bouron@techtown.fr` pour review.

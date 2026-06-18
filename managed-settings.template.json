@@ -3,6 +3,17 @@
   "forceRemoteSettingsRefresh": false,
   "requiredMinimumVersion": "2.1.169",
   "forceLoginOrgUUID": "6d572fd6-b704-47b1-9bc8-1a9847128db7",
+  "model": "claude-sonnet-4-6",
+  "language": "french",
+  "includeGitInstructions": true,
+  "cleanupPeriodDays": 60,
+  "companyAnnouncements": [
+    "⚡ TechTown — Expertise IA & Cloud | techtown.fr"
+  ],
+  "attribution": {
+    "commit": "Co-authored-by: Claude Code (TechTown)",
+    "pr": "Co-authored-by: Claude Code (TechTown)"
+  },
   "allowManagedMcpServersOnly": true,
   "allowedMcpServers": [
     { "serverName": "github" },
@@ -12,9 +23,6 @@
   "strictKnownMarketplaces": [
     { "source": "github", "repo": "anthropics/claude-plugins-official" },
     { "source": "github", "repo": "anthropics/claude-plugins-community" }
-  ],
-  "companyAnnouncements": [
-    "⚡ TechTown — Expertise IA & Cloud | techtown.fr"
   ],
   "permissions": {
     "disableBypassPermissionsMode": "disable",

@@ -1,5 +1,10 @@
 # TechTown — Instructions Claude Code
 
+> Instructions communes aux projets TechTown. Les garde-fous de sécurité, la gouvernance
+> (MCP, marketplaces, verrou org) et les conventions (modèle, langue) sont imposés via les
+> **managed settings** de l'org TechTown (voir `README.md`). Ce fichier complète ces settings
+> avec les standards de développement à appliquer dans chaque projet.
+
 ## Contexte Organisation
 
 Tu travailles dans le cadre des projets TechTown, cabinet d'expertise IA & Cloud basé à Nantes.
