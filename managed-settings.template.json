@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "forceRemoteSettingsRefresh": false,
+  "requiredMinimumVersion": "2.1.169",
+  "forceLoginOrgUUID": "6d572fd6-b704-47b1-9bc8-1a9847128db7",
+  "allowManagedMcpServersOnly": true,
+  "allowedMcpServers": [
+    { "serverName": "github" },
+    { "serverName": "context7" },
+    { "serverName": "playwright" }
+  ],
+  "strictKnownMarketplaces": [
+    { "source": "github", "repo": "anthropics/claude-plugins-official" },
+    { "source": "github", "repo": "anthropics/claude-plugins-community" }
+  ],
+  "companyAnnouncements": [
+    "⚡ TechTown — Expertise IA & Cloud | techtown.fr"
+  ],
+  "permissions": {
+    "disableBypassPermissionsMode": "disable",
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(./secrets/**)",
+      "Read(**/secrets/**)",
+      "Read(~/.ssh/**)",
+      "Read(~/.config/gcloud/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.gnupg/**)",
+      "Edit(.env)",
+      "Edit(.env.*)",
+      "Edit(~/.ssh/**)",
+      "Bash(curl *|sh)",
+      "Bash(wget *|sh)"
+    ],
+    "ask": [
+      "Bash(rm -rf /:*)",
+      "Bash(rm -rf ~:*)",
+      "Bash(sudo rm -rf /:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git push origin --force:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean -fdx:*)",
+      "Bash(gcloud * delete *)",
+      "Bash(gsutil rm:*)",
+      "Bash(terraform apply:*)",
+      "Bash(terraform destroy:*)",
+      "Bash(gh repo delete:*)",
+      "Bash(gh repo edit --visibility public:*)",
+      "Bash(dd if=*of=/dev/*)",
+      "Bash(mkfs:*)",
+      "Bash(diskutil eraseDisk:*)"
+    ]
+  }
+}

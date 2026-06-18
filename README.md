@@ -6,9 +6,18 @@ Configuration Claude Code de référence pour tous les projets TechTown.
 
 | Fichier | Rôle |
 |---------|------|
-| `settings.json` | Paramètres CC org-level (modèle, langue, permissions, attribution) |
+| `settings.json` | Paramètres CC **niveau projet** (modèle, langue, permissions souples, attribution) — overridable localement |
+| `managed-settings.template.json` | **Archive** du contenu poussé dans la **console admin** Anthropic (managed settings, inviolable) — voir ci-dessous |
 | `CLAUDE.md` | Instructions Claude communes à tous les projets TechTown |
 | `scripts/deploy.sh` | Script d'adoption dans un projet existant |
+
+## Deux niveaux de configuration
+
+1. **Niveau projet** (`settings.json`) — cloné/déployé par projet via `scripts/deploy.sh`. Chaque collaborateur peut l'ajuster localement (`.claude/settings.local.json`). Conventions souples : modèle, langue, allow pratiques.
+
+2. **Niveau managé / org** (`managed-settings.template.json`) — **inviolable**, poussé via la **console admin** Anthropic (`claude.ai/admin-settings/claude-code`), pas par git. TechTown n'a pas de MDM → c'est le canal officiel (plan Team/Enterprise). Garde-fous de sécurité : `deny` secrets + `ask` sur effets destructifs, verrou org, allowlist MCP/marketplaces.
+
+> ⚠️ `managed-settings.template.json` est une **copie de référence versionnée** — la console admin n'a pas d'historique git. Workflow : éditer ce fichier → copier son contenu dans la console → cliquer **« Mettre à jour les paramètres »**. Les clients le fetchent dans `~/.claude/remote-settings.json` (au démarrage + refetch horaire), **selon l'org authentifiée** (être loggé sous l'org TechTown pour le voir s'appliquer).
 
 ## Déploiement dans un projet
 
