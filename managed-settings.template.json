@@ -26,6 +26,21 @@
   ],
   "permissions": {
     "disableBypassPermissionsMode": "disable",
+    "allow": [
+      "Bash(gcloud * list:*)",
+      "Bash(gcloud * describe:*)",
+      "Bash(gcloud * get-iam-policy:*)",
+      "Bash(gcloud config list:*)",
+      "Bash(gcloud config get-value:*)",
+      "Bash(gcloud info:*)",
+      "Bash(gcloud version)",
+      "Bash(gcloud auth list:*)",
+      "Bash(gcloud storage ls:*)",
+      "Bash(gsutil ls:*)",
+      "Bash(gsutil stat:*)",
+      "Bash(bq ls:*)",
+      "Bash(bq show:*)"
+    ],
     "deny": [
       "Read(.env)",
       "Read(.env.*)",
