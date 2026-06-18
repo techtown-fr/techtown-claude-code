@@ -8,7 +8,7 @@
   "includeGitInstructions": true,
   "cleanupPeriodDays": 60,
   "companyAnnouncements": [
-    "⚡ TechTown — Expertise IA & Cloud | techtown.fr"
+    "🦀 TechTown — Expertise IA & Cloud | techtown.fr 🔥"
   ],
   "attribution": {
     "commit": "Co-authored-by: Claude Code (TechTown)",
@@ -53,7 +53,15 @@
       "Bash(git reset --hard:*)",
       "Bash(git clean -fdx:*)",
       "Bash(gcloud * delete *)",
+      "Bash(gcloud projects delete:*)",
+      "Bash(gcloud * add-iam-policy-binding *)",
+      "Bash(gcloud * remove-iam-policy-binding *)",
+      "Bash(gcloud * set-iam-policy *)",
+      "Bash(gcloud services disable *)",
+      "Bash(gcloud storage rm *)",
+      "Bash(gcloud auth revoke *)",
       "Bash(gsutil rm:*)",
+      "Bash(bq rm:*)",
       "Bash(terraform apply:*)",
       "Bash(terraform destroy:*)",
       "Bash(gh repo delete:*)",
