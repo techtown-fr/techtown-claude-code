@@ -22,7 +22,8 @@
   ],
   "strictKnownMarketplaces": [
     { "source": "github", "repo": "anthropics/claude-plugins-official" },
-    { "source": "github", "repo": "anthropics/claude-plugins-community" }
+    { "source": "github", "repo": "anthropics/claude-plugins-community" },
+    { "source": "github", "repo": "techtown-fr/techtown-marketplace" }
   ],
   "permissions": {
     "disableBypassPermissionsMode": "disable",
