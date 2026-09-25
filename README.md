@@ -26,6 +26,7 @@ Les managed settings ne se déploient **pas par git** — ils vivent côté serv
 ## Ce que contient la config managée
 
 - **Sécurité** : `deny` des secrets (`.env`, `~/.ssh`, `~/.config/gcloud`, `~/.aws`, `~/.gnupg`) + `curl|sh` ; `ask` sur les effets destructifs (force push, `reset --hard`, `gcloud/gsutil/terraform delete`, `rm -rf`, formatage disque…).
+- **Serveurs MCP fournis** : `managedMcpServers` distribue [Meetown](https://github.com/techtown-fr/meetown) (`https://mcp.meetown.techtown.fr/mcp`) à tout le monde — rien à installer, chacun s'authentifie une fois en OAuth via `/mcp` (Google SSO @techtown.fr). Visible sous **Managed MCPs**, non supprimable localement mais désactivable pour soi. Ces serveurs ne passent pas par l'allowlist `allowedMcpServers`. Requiert Claude Code ≥ 2.1.259, d'où `requiredMinimumVersion`.
 - **Gouvernance** : `forceLoginOrgUUID` (verrou org TechTown), `allowedMcpServers` + `allowManagedMcpServersOnly` (allowlist MCP : github, context7, playwright), `strictKnownMarketplaces` (2 marketplaces officielles Anthropic), `disableBypassPermissionsMode`.
 - **Conventions org** : `model` (claude-sonnet-4-6), `language` (français), `companyAnnouncements`, `attribution`, `includeGitInstructions`, `requiredMinimumVersion`.
 
