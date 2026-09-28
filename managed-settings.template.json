@@ -14,9 +14,9 @@
     "commit": "Co-authored-by: Claude Code (TechTown)",
     "pr": "Co-authored-by: Claude Code (TechTown)"
   },
-  "managedMcpServers": {
+  "managedMcpServers": [{
     "meetown": { "type": "http", "url": "https://mcp.meetown.techtown.fr/mcp" }
-  },
+  }],
   "allowManagedMcpServersOnly": true,
   "allowedMcpServers": [
     { "serverName": "github" },

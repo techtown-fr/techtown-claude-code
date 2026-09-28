@@ -26,12 +26,25 @@ Les managed settings ne se déploient **pas par git** — ils vivent côté serv
 ## Ce que contient la config managée
 
 - **Sécurité** : `deny` des secrets (`.env`, `~/.ssh`, `~/.config/gcloud`, `~/.aws`, `~/.gnupg`) + `curl|sh` ; `ask` sur les effets destructifs (force push, `reset --hard`, `gcloud/gsutil/terraform delete`, `rm -rf`, formatage disque…).
-- **Serveurs MCP fournis** : `managedMcpServers` distribue [Meetown](https://github.com/techtown-fr/meetown) (`https://mcp.meetown.techtown.fr/mcp`) à tout le monde — rien à installer, chacun s'authentifie une fois en OAuth via `/mcp` (Google SSO @techtown.fr). Visible sous **Managed MCPs**, non supprimable localement mais désactivable pour soi. Ces serveurs ne passent pas par l'allowlist `allowedMcpServers`. Requiert Claude Code ≥ 2.1.259, d'où `requiredMinimumVersion`.
+- **Serveurs MCP fournis** : `managedMcpServers` déclare [Meetown](https://github.com/techtown-fr/meetown) (`https://mcp.meetown.techtown.fr/mcp`). ⚠️ **Sans effet aujourd'hui**, voir [Limite connue : `managedMcpServers`](#limite-connue--managedmcpservers).
 - **Marketplace TechTown** : `extraKnownMarketplaces` enregistre [techtown-marketplace](https://github.com/techtown-fr/techtown-marketplace) sur chaque poste (plus besoin de `claude plugin marketplace add`), avec `autoUpdate: true` pour que les nouvelles versions des plugins arrivent sans action. Enregistrer la marketplace n'installe aucun plugin : c'est `enabledPlugins` qui en impose.
 - **Gouvernance** : `forceLoginOrgUUID` (verrou org TechTown), `allowedMcpServers` + `allowManagedMcpServersOnly` (allowlist MCP : github, context7, playwright), `strictKnownMarketplaces` (2 marketplaces officielles Anthropic), `disableBypassPermissionsMode`.
 - **Conventions org** : `model` (claude-sonnet-4-6), `language` (français), `companyAnnouncements`, `attribution`, `includeGitInstructions`, `requiredMinimumVersion`.
 
 **Choix de design :** les `allow` ne sont **pas** verrouillés au niveau managé — chaque collaborateur garde ses `allow` projet/user. Le managé n'impose que les garde-fous `ask`/`deny` et la gouvernance. L'auto-mode n'est **pas** bloqué.
+
+## Limite connue : `managedMcpServers`
+
+La même clé désigne deux formats différents :
+
+| Lecteur | Format attendu | Doc |
+|---|---|---|
+| Claude Code | **objet** indexé par nom : `{ "meetown": { "type": "http", "url": "…" } }` | [managed-mcp](https://code.claude.com/docs/en/managed-mcp#provide-servers-through-managed-settings) |
+| Claude Desktop (déploiements tiers uniquement) | **tableau** d'entrées | [desktop](https://code.claude.com/docs/en/desktop#enterprise-configuration) |
+
+Le schéma schemastore, contre lequel la console valide, ne connaît que le format tableau de Desktop. La console refuse donc le format objet de Claude Code, et Claude Code ignore le tableau. Constaté le 2026-09-28 : le `~/.claude/remote-settings.json` récupéré juste après la mise à jour contient toutes les autres clés, mais pas `managedMcpServers`, et `claude mcp list` ne montre pas Meetown.
+
+Le tableau reste dans le template parce que c'est ce qui est déployé dans la console. Tant que le schéma n'est pas corrigé, la distribution de Meetown passe par le connecteur d'organisation sur claude.ai (voir la PR qui introduit cette section).
 
 ## Niveaux de settings dans Claude Code
 
