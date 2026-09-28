@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "forceRemoteSettingsRefresh": false,
-  "requiredMinimumVersion": "2.1.169",
+  "requiredMinimumVersion": "2.1.259",
   "forceLoginOrgUUID": "6d572fd6-b704-47b1-9bc8-1a9847128db7",
   "model": "claude-sonnet-4-6",
   "language": "french",
@@ -13,6 +13,9 @@
   "attribution": {
     "commit": "Co-authored-by: Claude Code (TechTown)",
     "pr": "Co-authored-by: Claude Code (TechTown)"
+  },
+  "managedMcpServers": {
+    "meetown": { "type": "http", "url": "https://mcp.meetown.techtown.fr/mcp" }
   },
   "allowManagedMcpServersOnly": true,
   "allowedMcpServers": [
@@ -27,7 +30,8 @@
   ],
   "extraKnownMarketplaces": {
     "techtown-marketplace": {
-      "source": { "source": "github", "repo": "techtown-fr/techtown-marketplace" }
+      "source": { "source": "github", "repo": "techtown-fr/techtown-marketplace" },
+      "autoUpdate": true
     }
   },
   "enabledPlugins": {
