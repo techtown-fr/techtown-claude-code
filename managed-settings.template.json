@@ -30,7 +30,8 @@
   ],
   "extraKnownMarketplaces": {
     "techtown-marketplace": {
-      "source": { "source": "github", "repo": "techtown-fr/techtown-marketplace" }
+      "source": { "source": "github", "repo": "techtown-fr/techtown-marketplace" },
+      "autoUpdate": true
     }
   },
   "enabledPlugins": {
