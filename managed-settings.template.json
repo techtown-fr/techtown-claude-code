@@ -17,7 +17,6 @@
   "managedMcpServers": [{
     "meetown": { "type": "http", "url": "https://mcp.meetown.techtown.fr/mcp" }
   }],
-  "allowManagedMcpServersOnly": true,
   "allowedMcpServers": [
     { "serverName": "github" },
     { "serverName": "context7" },
