@@ -25,11 +25,16 @@
   "strictKnownMarketplaces": [
     { "source": "github", "repo": "anthropics/claude-plugins-official" },
     { "source": "github", "repo": "anthropics/claude-plugins-community" },
-    { "source": "github", "repo": "techtown-fr/techtown-marketplace" }
+    { "source": "github", "repo": "techtown-fr/techtown-marketplace" },
+    { "source": "github", "repo": "google/skills" }
   ],
   "extraKnownMarketplaces": {
     "techtown-marketplace": {
       "source": { "source": "github", "repo": "techtown-fr/techtown-marketplace" },
+      "autoUpdate": true
+    },
+    "google-plugins": {
+      "source": { "source": "github", "repo": "google/skills" },
       "autoUpdate": true
     }
   },
