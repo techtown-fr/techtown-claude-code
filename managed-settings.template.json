@@ -3,7 +3,6 @@
   "forceRemoteSettingsRefresh": false,
   "requiredMinimumVersion": "2.1.259",
   "forceLoginOrgUUID": "6d572fd6-b704-47b1-9bc8-1a9847128db7",
-  "model": "claude-sonnet-4-6",
   "language": "french",
   "includeGitInstructions": true,
   "cleanupPeriodDays": 60,
@@ -14,27 +13,12 @@
     "commit": "Co-authored-by: Claude Code (TechTown)",
     "pr": "Co-authored-by: Claude Code (TechTown)"
   },
-  "managedMcpServers": [{
+  "managedMcpServers": {
     "meetown": { "type": "http", "url": "https://mcp.meetown.techtown.fr/mcp" }
-  }],
-  "allowedMcpServers": [
-    { "serverName": "github" },
-    { "serverName": "context7" },
-    { "serverName": "playwright" }
-  ],
-  "strictKnownMarketplaces": [
-    { "source": "github", "repo": "anthropics/claude-plugins-official" },
-    { "source": "github", "repo": "anthropics/claude-plugins-community" },
-    { "source": "github", "repo": "techtown-fr/techtown-marketplace" },
-    { "source": "github", "repo": "google/skills" }
-  ],
+  },
   "extraKnownMarketplaces": {
     "techtown-marketplace": {
       "source": { "source": "github", "repo": "techtown-fr/techtown-marketplace" },
-      "autoUpdate": true
-    },
-    "google-plugins": {
-      "source": { "source": "github", "repo": "google/skills" },
       "autoUpdate": true
     }
   },
@@ -44,9 +28,7 @@
   "permissions": {
     "disableBypassPermissionsMode": "disable",
     "allow": [
-      "Bash(gcloud * list*)",
-      "Bash(gcloud * describe*)",
-      "Bash(gcloud * get-iam-policy*)",
+      "Bash(gcloud:*)",
       "Bash(gcloud config list:*)",
       "Bash(gcloud config get-value:*)",
       "Bash(gcloud info:*)",
